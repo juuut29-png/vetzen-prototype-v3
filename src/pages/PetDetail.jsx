@@ -5,7 +5,7 @@ import { useEffect, useState } from 'react'
 import { Pencil, Trash2 } from 'lucide-react'
 import EditPetModal from '../components/EditPetModal.jsx'
 
-export default function PetDetail(){
+export default function PetDetail() {
   const { id } = useParams()
   const navigate = useNavigate()
   const list = loadPets()
@@ -29,8 +29,8 @@ export default function PetDetail(){
   if (!pet)
     return <Page title='Mascota no encontrada'>No existe.</Page>
 
-  function deletePet(){
-    if(confirm(`¿Seguro que deseas borrar a ${pet.nombre}?`)){
+  function deletePet() {
+    if (confirm(`¿Seguro que deseas borrar a ${pet.nombre}?`)) {
       const updated = list.filter(p => p.id !== pet.id)
       savePets(updated)
       alert(`${pet.nombre} ha sido eliminada.`)
@@ -44,21 +44,22 @@ export default function PetDetail(){
         <button
           onClick={() => setOpenEdit(true)}
           className='px-3 py-2 rounded-xl border hover:bg-emerald-50 flex items-center gap-1 text-sm'>
-          <Pencil size={16}/> Editar
+          <Pencil size={16} /> Editar
         </button>
         <button
           onClick={deletePet}
           className='px-3 py-2 rounded-xl border border-red-300 text-red-600 hover:bg-red-50 flex items-center gap-1 text-sm'>
-          <Trash2 size={16}/> Borrar
+          <Trash2 size={16} /> Borrar
         </button>
       </div>
 
       <div className='grid md:grid-cols-3 gap-4'>
-        {/* Bloque de datos principales */}
+        {/* Datos principales */}
         <div className='bg-white rounded-2xl shadow-soft p-4 border border-emerald-100 md:col-span-2'>
           <p className='font-semibold text-emerald-800'>Datos</p>
           <p className='text-sm text-gray-700 mt-1'>
-            {pet.especie}{pet.raza ? ` • ${pet.raza}` : ''} • {pet.edad?.toFixed?.(1)} años • {pet.fase}
+            {pet.especie}
+            {pet.raza ? ` • ${pet.raza}` : ''} • {pet.edad?.toFixed?.(1)} años • {pet.fase}
             {pet.peso ? ` • ${pet.peso} kg` : ''}
           </p>
           <p className='text-sm text-emerald-700 mt-1'>{pet.consejoIA}</p>
@@ -74,7 +75,7 @@ export default function PetDetail(){
           </div>
         </div>
 
-        {/* Bloque lateral derecho */}
+        {/* Consejo IA + Historial veterinario */}
         <div className='bg-white rounded-2xl shadow-soft p-4 border border-emerald-100'>
           <p className='font-semibold text-emerald-800'>Consejo IA</p>
           <p className='text-sm text-gray-700 mt-2'>
@@ -84,12 +85,11 @@ export default function PetDetail(){
             {makeAdvice('ph', data.ph ?? 7.2, pet.especie)}
           </p>
 
-          {/* 🩺 Historial veterinario */}
           {pet.historial?.length > 0 && (
             <div className='mt-4'>
               <p className='font-semibold text-emerald-800 mb-2'>Historial veterinario</p>
               <ul className='text-sm space-y-1'>
-                {pet.historial.map((h,i)=>(
+                {pet.historial.map((h, i) => (
                   <li key={i} className='border-b border-emerald-50 pb-1'>
                     <span className='font-medium'>{h.tipo}</span> — {h.descripcion}{' '}
                     <span className='text-xs text-gray-500'>({h.fecha})</span>
@@ -101,7 +101,7 @@ export default function PetDetail(){
         </div>
       </div>
 
-     <EditPetModal
+      <EditPetModal
         open={openEdit}
         pet={pet}
         onClose={() => setOpenEdit(false)}
