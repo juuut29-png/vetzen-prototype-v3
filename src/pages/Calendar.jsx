@@ -6,7 +6,7 @@ import { motion, AnimatePresence } from 'framer-motion'
 
 const TYPE_OPTIONS=[
   {key:'vacuna', label:'Vacuna', icon:'💉'},
-  {key:'desparasitacion', label:'Desparasitación', icon:'🪳'},
+  {key:'desparasitacion', label:'Desparasitación', icon:'💊'},
   {key:'peluqueria', label:'Peluquería', icon:'✂️'},
   {key:'revision', label:'Revisión veterinaria', icon:'🩺'},
   {key:'cita', label:'Cita veterinaria', icon:'🕒'},
