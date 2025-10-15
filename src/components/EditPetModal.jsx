@@ -2,12 +2,14 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { X } from 'lucide-react'
 import { savePets, loadPets, getPhaseAndAdviceFromDOB } from '../mock.js'
 import { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 
 export default function EditPetModal({ open, onClose, pet, onSaved }){
   const [nombre, setNombre] = useState(pet?.nombre || '')
   const [raza, setRaza] = useState(pet?.raza || '')
   const [dob, setDob] = useState(pet?.dob || '')
   const [peso, setPeso] = useState(pet?.peso || 0)
+  const navigate = useNavigate()
 
   function save(e){
     e.preventDefault()
@@ -31,6 +33,7 @@ export default function EditPetModal({ open, onClose, pet, onSaved }){
     savePets(updated)
     if(onSaved) onSaved()
     onClose()
+    navigate(`/mascotas/${pet.id}`) // ✅ navegación interna sin 404
   }
 
   return (
