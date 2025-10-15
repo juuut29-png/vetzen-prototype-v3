@@ -6,12 +6,12 @@ import { Pencil, Trash2 } from 'lucide-react'
 import EditPetModal from '../components/EditPetModal.jsx'
 
 export default function PetDetail(){
-  const { id } = useParams();
-  const navigate = useNavigate();
-  const list = loadPets();
-  const pet = list.find(p => p.id === id);
-  const [data, setData] = useState({});
-  const [openEdit, setOpenEdit] = useState(false);
+  const { id } = useParams()
+  const navigate = useNavigate()
+  const list = loadPets()
+  const pet = list.find(p => p.id === id)
+  const [data, setData] = useState({})
+  const [openEdit, setOpenEdit] = useState(false)
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -21,38 +21,40 @@ export default function PetDetail(){
         ph: getReading('ph'),
         actividad: getReading('actividad'),
         pulso: getReading('pulso')
-      });
-    }, 1500);
-    return () => clearInterval(interval);
-  }, []);
+      })
+    }, 1500)
+    return () => clearInterval(interval)
+  }, [])
 
   if (!pet)
-    return <Page title='Mascota no encontrada'>No existe.</Page>;
+    return <Page title='Mascota no encontrada'>No existe.</Page>
 
   function deletePet(){
     if(confirm(`¿Seguro que deseas borrar a ${pet.nombre}?`)){
-      const updated = list.filter(p => p.id !== pet.id);
-      savePets(updated);
-      alert(`${pet.nombre} ha sido eliminada.`);
-      navigate('/mascotas');
+      const updated = list.filter(p => p.id !== pet.id)
+      savePets(updated)
+      alert(`${pet.nombre} ha sido eliminada.`)
+      navigate('/mascotas')
     }
   }
 
   return (
-    <Page title={`Perfil: ${pet.nombre}`} actions={
-      <div className='flex gap-2'>
-        <button
-          onClick={() => setOpenEdit(true)}
-          className='px-3 py-2 rounded-xl border hover:bg-emerald-50 flex items-center gap-1 text-sm'>
-          <Pencil size={16}/> Editar
-        </button>
-        <button
-          onClick={deletePet}
-          className='px-3 py-2 rounded-xl border border-red-300 text-red-600 hover:bg-red-50 flex items-center gap-1 text-sm'>
-          <Trash2 size={16}/> Borrar
-        </button>
-      </div>
-    }>
+    <Page
+      title={`Perfil: ${pet.nombre}`}
+      actions={
+        <div className='flex gap-2 mt-2'>
+          <button
+            onClick={() => setOpenEdit(true)}
+            className='px-3 py-2 rounded-xl border hover:bg-emerald-50 flex items-center gap-1 text-sm'>
+            <Pencil size={16}/> Editar
+          </button>
+          <button
+            onClick={deletePet}
+            className='px-3 py-2 rounded-xl border border-red-300 text-red-600 hover:bg-red-50 flex items-center gap-1 text-sm'>
+            <Trash2 size={16}/> Borrar
+          </button>
+        </div>
+      }>
       <div className='grid md:grid-cols-3 gap-4'>
         <div className='bg-white rounded-2xl shadow-soft p-4 border border-emerald-100 md:col-span-2'>
           <p className='font-semibold text-emerald-800'>Datos</p>
@@ -84,7 +86,12 @@ export default function PetDetail(){
         </div>
       </div>
 
-      <EditPetModal open={openEdit} pet={pet} onClose={() => setOpenEdit(false)} onSaved={() => window.location.reload()} />
+      <EditPetModal
+        open={openEdit}
+        pet={pet}
+        onClose={() => setOpenEdit(false)}
+        onSaved={() => window.location.reload()}
+      />
     </Page>
-  );
+  )
 }
