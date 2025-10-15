@@ -1,8 +1,7 @@
 import { motion, AnimatePresence } from 'framer-motion'
-import { X, Search } from 'lucide-react'
+import { X } from 'lucide-react'
 import { SPECIES, addPet, getPhaseAndAdviceFromDOB } from '../mock.js'
-import { BREEDS } from '../data/breeds.js'
-import { useMemo, useState } from 'react'
+import { useState } from 'react'
 
 export default function AddPetModal({ open, onClose, onSaved }){
   const [nombre,setNombre]=useState('')
@@ -10,13 +9,7 @@ export default function AddPetModal({ open, onClose, onSaved }){
   const [dob,setDob]=useState('')
   const [peso,setPeso]=useState('')
   const [raza,setRaza]=useState('')
-  const [query,setQuery]=useState('')
-  const [historial,setHistorial]=useState('') // 🩺 nuevo campo
-
-  const list = useMemo(()=>BREEDS[especie]||[],[especie])
-  const filtered = useMemo(()=>list.filter(b=>b.toLowerCase().includes((query||'').toLowerCase())).slice(0,6),[list,query])
-
-  function pick(b){ setRaza(b); setQuery(b) }
+  const [historial,setHistorial]=useState('')
 
   function save(e){
     e.preventDefault()
@@ -25,17 +18,14 @@ export default function AddPetModal({ open, onClose, onSaved }){
     const parsedHistorial = historial
       ? historial.split(';').map(h=>{
           const [tipo,descripcion]=h.split(':').map(s=>s.trim())
-          return { tipo: tipo || 'Nota', fecha: new Date().toISOString().slice(0,10), descripcion: descripcion || '' }
+          return { tipo: (tipo||'Nota'), fecha: new Date().toISOString().slice(0,10), descripcion: (descripcion||'') }
         })
       : []
 
-    const c=getPhaseAndAdviceFromDOB(especie,dob,parseFloat(peso||0),raza||query||'')
+    const c=getPhaseAndAdviceFromDOB(especie,dob,parseFloat(peso||0),raza||'')
     const pet={
       id:(nombre+'_'+Date.now()).toLowerCase().replace(/\s+/g,'_'),
-      nombre,
-      especie,
-      raza:raza||query||'',
-      dob,
+      nombre, especie, raza:raza||'', dob,
       peso:parseFloat(peso||0),
       edad:+c.ageYears.toFixed(1),
       fase:c.phase,
@@ -43,7 +33,11 @@ export default function AddPetModal({ open, onClose, onSaved }){
       pesoEstado:c.weightStatus,
       pesoConsejo:c.weightAdvice,
       sensores:[],
-      historial:parsedHistorial
+      historial:parsedHistorial,
+      historialClinico:[],
+      vacunas:[],
+      tratamientos:[],
+      archivos:[]
     }
     addPet(pet)
     onSaved&&onSaved(pet)
@@ -69,21 +63,13 @@ export default function AddPetModal({ open, onClose, onSaved }){
               </div>
               <div>
                 <label className='text-sm text-gray-600'>Especie</label>
-                <select value={especie} onChange={e=>{setEspecie(e.target.value); setQuery(''); setRaza('')}} className='w-full px-3 py-2 rounded-xl border border-emerald-200 focus:ring-2 focus:ring-emerald-600'>
+                <select value={especie} onChange={e=>setEspecie(e.target.value)} className='w-full px-3 py-2 rounded-xl border border-emerald-200 focus:ring-2 focus:ring-emerald-600'>
                   {SPECIES.map(s=><option key={s} value={s}>{s}</option>)}
                 </select>
               </div>
               <div>
                 <label className='text-sm text-gray-600'>Raza / tipo</label>
-                <div className='relative'>
-                  <div className='absolute left-2 top-1/2 -translate-y-1/2'><Search size={16} className='text-gray-400'/></div>
-                  <input value={query} onChange={e=>{setQuery(e.target.value); setRaza('')}} placeholder='Escribe para buscar…' className='w-full pl-8 pr-3 py-2 rounded-xl border border-emerald-200 focus:ring-2 focus:ring-emerald-600'/>
-                  {filtered.length>0 && (
-                    <div className='absolute z-10 mt-1 w-full bg-white border border-emerald-100 rounded-xl shadow-soft max-h-48 overflow-auto'>
-                      {filtered.map(b=>(<button type='button' key={b} onClick={()=>pick(b)} className='w-full text-left px-3 py-2 hover:bg-emerald-50'>{b}</button>))}
-                    </div>
-                  )}
-                </div>
+                <input value={raza} onChange={e=>setRaza(e.target.value)} placeholder='Opcional' className='w-full px-3 py-2 rounded-xl border border-emerald-200 focus:ring-2 focus:ring-emerald-600'/>
               </div>
               <div className='grid grid-cols-2 gap-3'>
                 <div>
@@ -96,11 +82,9 @@ export default function AddPetModal({ open, onClose, onSaved }){
                 </div>
               </div>
 
-              {/* 🩺 Campo historial */}
               <div>
-                <label className='text-sm text-gray-600'>Historial veterinario (opcional)</label>
-                <textarea value={historial} onChange={e=>setHistorial(e.target.value)} placeholder='Ej: Vacuna rabia 2024; Desparasitación julio 2024...' className='w-full px-3 py-2 rounded-xl border border-emerald-200 focus:ring-2 focus:ring-emerald-600 text-sm'/>
-                <p className='text-xs text-gray-500 mt-1'>Separa las entradas con punto y coma (;)</p>
+                <label className='text-sm text-gray-600'>Historial veterinario inicial (texto libre)</label>
+                <textarea value={historial} onChange={e=>setHistorial(e.target.value)} placeholder='Ej: Vacuna rabia: 2024; Desparasitación: 2025-01-10...' className='w-full px-3 py-2 rounded-xl border border-emerald-200 focus:ring-2 focus:ring-emerald-600 text-sm'/>
               </div>
 
               <div className='flex gap-3 justify-end pt-2'>

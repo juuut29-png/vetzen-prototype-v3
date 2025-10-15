@@ -17,7 +17,7 @@ export default function EditPetModal({ open, onClose, pet, onSaved }){
     const parsedHistorial = historial
       ? historial.split(';').map(h=>{
           const [tipo,descripcion]=h.split(':').map(s=>s.trim())
-          return { tipo: tipo || 'Nota', fecha: new Date().toISOString().slice(0,10), descripcion: descripcion || '' }
+          return { tipo: (tipo||'Nota'), fecha: new Date().toISOString().slice(0,10), descripcion: (descripcion||'') }
         })
       : []
 
@@ -30,8 +30,8 @@ export default function EditPetModal({ open, onClose, pet, onSaved }){
         pesoEstado:c.weightStatus,pesoConsejo:c.weightAdvice,historial:parsedHistorial}
     })
     savePets(updated)
-    if(onSaved) onSaved()
-    onClose()
+    onSaved && onSaved()
+    onClose && onClose()
     navigate(`/mascotas/${pet.id}`)
   }
 
@@ -67,11 +67,10 @@ export default function EditPetModal({ open, onClose, pet, onSaved }){
                 </div>
               </div>
 
-              {/* 🩺 Campo historial */}
               <div>
-                <label className='text-sm text-gray-600'>Historial veterinario</label>
-                <textarea value={historial} onChange={e=>setHistorial(e.target.value)} placeholder='Ej: Vacuna rabia: aplicada en 2024; Desparasitación: julio 2024...' className='w-full px-3 py-2 rounded-xl border border-emerald-200 focus:ring-2 focus:ring-emerald-600 text-sm'/>
-                <p className='text-xs text-gray-500 mt-1'>Formato: Tipo: descripción; Tipo: descripción...</p>
+                <label className='text-sm text-gray-600'>Historial veterinario (texto libre)</label>
+                <textarea value={historial} onChange={e=>setHistorial(e.target.value)} placeholder='Ej: Vacuna rabia: 2024; Desparasitación: 2025-01-10...' className='w-full px-3 py-2 rounded-xl border border-emerald-200 focus:ring-2 focus:ring-emerald-600 text-sm'/>
+                <p className='text-xs text-gray-500 mt-1'>Formato: Tipo: descripción; Tipo: descripción</p>
               </div>
 
               <div className='flex gap-3 justify-end pt-2'>
