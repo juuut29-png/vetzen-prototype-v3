@@ -54,6 +54,7 @@ export default function PetDetail(){
       </div>
 
       <div className='grid md:grid-cols-3 gap-4'>
+        {/* Bloque de datos principales */}
         <div className='bg-white rounded-2xl shadow-soft p-4 border border-emerald-100 md:col-span-2'>
           <p className='font-semibold text-emerald-800'>Datos</p>
           <p className='text-sm text-gray-700 mt-1'>
@@ -73,6 +74,7 @@ export default function PetDetail(){
           </div>
         </div>
 
+        {/* Bloque lateral derecho */}
         <div className='bg-white rounded-2xl shadow-soft p-4 border border-emerald-100'>
           <p className='font-semibold text-emerald-800'>Consejo IA</p>
           <p className='text-sm text-gray-700 mt-2'>
@@ -84,4 +86,27 @@ export default function PetDetail(){
 
           {/* 🩺 Historial veterinario */}
           {pet.historial?.length > 0 && (
-            <
+            <div className='mt-4'>
+              <p className='font-semibold text-emerald-800 mb-2'>Historial veterinario</p>
+              <ul className='text-sm space-y-1'>
+                {pet.historial.map((h,i)=>(
+                  <li key={i} className='border-b border-emerald-50 pb-1'>
+                    <span className='font-medium'>{h.tipo}</span> — {h.descripcion}{' '}
+                    <span className='text-xs text-gray-500'>({h.fecha})</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
+        </div>
+      </div>
+
+      <EditPetModal
+        open={openEdit}
+        pet={pet}
+        onClose={() => setOpenEdit(false)}
+        onSaved={() => {}}
+      />
+    </Page>
+  )
+}
