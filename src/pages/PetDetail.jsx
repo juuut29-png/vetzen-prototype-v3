@@ -101,7 +101,7 @@ export default function PetDetail(){
         </div>
       </div>
 
-      <EditPetModal
+     <EditPetModal
         open={openEdit}
         pet={pet}
         onClose={() => setOpenEdit(false)}
