@@ -1,0 +1,12 @@
+import { Routes, Route } from 'react-router-dom'
+import Sidebar from './components/Sidebar.jsx'
+import Page from './components/Page.jsx'
+import Dashboard from './pages/Dashboard.jsx'
+import Pets from './pages/Pets.jsx'
+import PetDetail from './pages/PetDetail.jsx'
+import Devices from './pages/Devices.jsx'
+import Alerts from './pages/Alerts.jsx'
+import Calendar from './pages/Calendar.jsx'
+import AIChat from './pages/AIChat.jsx'
+import Vet from './pages/Vet.jsx'
+export default function App(){return(<div className='min-h-screen bg-emerald-50 text-gray-800 flex'><Sidebar/><main className='flex-1'><Routes><Route path='/' element={<Dashboard/>}/><Route path='/mascotas' element={<Pets/>}/><Route path='/mascotas/:id' element={<PetDetail/>}/><Route path='/dispositivos' element={<Devices/>}/><Route path='/alertas' element={<Alerts/>}/><Route path='/calendario' element={<Calendar/>}/><Route path='/ai' element={<AIChat/>}/><Route path='/veterinario' element={<Vet/>}/><Route path='*' element={<Page title='No encontrado'>Ruta inexistente.</Page>}/></Routes></main></div>)}
