@@ -39,22 +39,21 @@ export default function PetDetail(){
   }
 
   return (
-    <Page
-      title={`Perfil: ${pet.nombre}`}
-      actions={
-        <div className='flex gap-2 mt-2'>
-          <button
-            onClick={() => setOpenEdit(true)}
-            className='px-3 py-2 rounded-xl border hover:bg-emerald-50 flex items-center gap-1 text-sm'>
-            <Pencil size={16}/> Editar
-          </button>
-          <button
-            onClick={deletePet}
-            className='px-3 py-2 rounded-xl border border-red-300 text-red-600 hover:bg-red-50 flex items-center gap-1 text-sm'>
-            <Trash2 size={16}/> Borrar
-          </button>
-        </div>
-      }>
+    <Page title={`Perfil: ${pet.nombre}`}>
+      {/* 🔥 BOTONES FIJOS DE ACCIÓN */}
+      <div className='flex flex-wrap gap-2 justify-end mb-4'>
+        <button
+          onClick={() => setOpenEdit(true)}
+          className='px-3 py-2 rounded-xl border hover:bg-emerald-50 flex items-center gap-1 text-sm'>
+          <Pencil size={16}/> Editar
+        </button>
+        <button
+          onClick={deletePet}
+          className='px-3 py-2 rounded-xl border border-red-300 text-red-600 hover:bg-red-50 flex items-center gap-1 text-sm'>
+          <Trash2 size={16}/> Borrar
+        </button>
+      </div>
+
       <div className='grid md:grid-cols-3 gap-4'>
         <div className='bg-white rounded-2xl shadow-soft p-4 border border-emerald-100 md:col-span-2'>
           <p className='font-semibold text-emerald-800'>Datos</p>
