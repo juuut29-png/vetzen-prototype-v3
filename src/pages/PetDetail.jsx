@@ -40,7 +40,6 @@ export default function PetDetail(){
 
   return (
     <Page title={`Perfil: ${pet.nombre}`}>
-      {/* 🔥 BOTONES FIJOS DE ACCIÓN */}
       <div className='flex flex-wrap gap-2 justify-end mb-4'>
         <button
           onClick={() => setOpenEdit(true)}
@@ -82,15 +81,7 @@ export default function PetDetail(){
           <p className='text-sm text-gray-700 mt-1'>
             {makeAdvice('ph', data.ph ?? 7.2, pet.especie)}
           </p>
-        </div>
-      </div>
 
-      <EditPetModal
-        open={openEdit}
-        pet={pet}
-        onClose={() => setOpenEdit(false)}
-        onSaved={() => window.location.reload()}
-      />
-    </Page>
-  )
-}
+          {/* 🩺 Historial veterinario */}
+          {pet.historial?.length > 0 && (
+            <
