@@ -1,7 +1,7 @@
 import { motion, AnimatePresence } from 'framer-motion'
 import { X } from 'lucide-react'
 import { SPECIES, addPet, getPhaseAndAdviceFromDOB } from '../mock.js'
-import { BREEDS } from '../breeds.js'
+import { BREEDS } from '../data/breeds.js'
 import { useState } from 'react'
 
 export default function AddPetModal({ open, onClose, onSaved }) {
