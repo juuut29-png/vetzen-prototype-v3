@@ -2,7 +2,7 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { X } from 'lucide-react'
 import { SPECIES, addPet, getPhaseAndAdviceFromDOB } from '../mock.js'
 import { BREEDS } from '../breeds.js'
-import { useState, useMemo } from 'react'
+import { useState } from 'react'
 
 export default function AddPetModal({ open, onClose, onSaved }) {
   const [nombre, setNombre] = useState('')
@@ -12,13 +12,6 @@ export default function AddPetModal({ open, onClose, onSaved }) {
   const [raza, setRaza] = useState('')
   const [historial, setHistorial] = useState('')
   const [filtro, setFiltro] = useState('')
-
-  const razasDisponibles = useMemo(() => {
-    if (!BREEDS[especie]) return []
-    return BREEDS[especie].filter(r =>
-      r.toLowerCase().includes(filtro.trim().toLowerCase())
-    )
-  }, [especie, filtro])
 
   function save(e) {
     e.preventDefault()
@@ -62,8 +55,13 @@ export default function AddPetModal({ open, onClose, onSaved }) {
     addPet(pet)
     onSaved && onSaved(pet)
     onClose && onClose()
-    window.location.reload() // refresca lista de mascotas
+    window.location.reload()
   }
+
+  const razasDisponibles = BREEDS[especie] || []
+  const razasFiltradas = razasDisponibles.filter(r =>
+    r.toLowerCase().includes(filtro.toLowerCase())
+  )
 
   return (
     <AnimatePresence>
@@ -87,10 +85,7 @@ export default function AddPetModal({ open, onClose, onSaved }) {
           >
             <div className="flex items-center justify-between">
               <h3 className="text-xl font-extrabold text-emerald-700">Añadir mascota</h3>
-              <button
-                onClick={onClose}
-                className="p-2 rounded-xl hover:bg-emerald-50"
-              >
+              <button onClick={onClose} className="p-2 rounded-xl hover:bg-emerald-50">
                 <X size={18} />
               </button>
             </div>
@@ -124,22 +119,21 @@ export default function AddPetModal({ open, onClose, onSaved }) {
                 </select>
               </div>
 
-              {/* 🐾 Campo de raza / tipo con autocompletado y lista visible */}
+              {/* RAZAS */}
               <div>
                 <label className="text-sm text-gray-600">Raza / tipo</label>
-                {Array.isArray(BREEDS?.[especie]) && BREEDS[especie].length > 0 ? (
+                {razasDisponibles.length > 0 ? (
                   <div className="relative">
                     <input
                       value={filtro || raza}
                       onChange={e => setFiltro(e.target.value)}
-                      onFocus={() => setFiltro(' ')} // muestra todas al enfocar
-                      placeholder="Escribe o selecciona una raza"
+                      onFocus={() => setFiltro(' ')} // muestra todo al hacer clic
+                      placeholder="Escribe para buscar o selecciona una raza"
                       className="w-full px-3 py-2 rounded-xl border border-emerald-200 focus:ring-2 focus:ring-emerald-600"
                     />
-
-                    {razasDisponibles.length > 0 && (
+                    {razasFiltradas.length > 0 && (
                       <ul className="absolute z-50 mt-1 w-full bg-white border border-emerald-100 rounded-xl shadow-lg max-h-48 overflow-y-auto">
-                        {razasDisponibles.map(r => (
+                        {razasFiltradas.map(r => (
                           <li
                             key={r}
                             onMouseDown={() => {
@@ -175,7 +169,7 @@ export default function AddPetModal({ open, onClose, onSaved }) {
                   />
                 </div>
                 <div>
-                  <label className="text-sm text-gray-600">Peso (kg) — opcional</label>
+                  <label className="text-sm text-gray-600">Peso (kg)</label>
                   <input
                     type="number"
                     step="0.01"
@@ -199,11 +193,7 @@ export default function AddPetModal({ open, onClose, onSaved }) {
               </div>
 
               <div className="flex gap-3 justify-end pt-2">
-                <button
-                  type="button"
-                  onClick={onClose}
-                  className="px-4 py-2 rounded-xl border"
-                >
+                <button type="button" onClick={onClose} className="px-4 py-2 rounded-xl border">
                   Cancelar
                 </button>
                 <button
