@@ -12,11 +12,16 @@ export default function AddPetModal({ open, onClose, onSaved }) {
   const [raza, setRaza] = useState('')
   const [historial, setHistorial] = useState('')
   const [filtro, setFiltro] = useState('')
+  const [enfocado, setEnfocado] = useState(false)
 
   const razasDisponibles = BREEDS[especie] || []
+
   const razasFiltradas = razasDisponibles.filter(r =>
     r.toLowerCase().includes(filtro.toLowerCase())
   )
+
+  const mostrarLista =
+    enfocado && (filtro.length > 0 || razasFiltradas.length > 0)
 
   function save(e) {
     e.preventDefault()
@@ -102,7 +107,6 @@ export default function AddPetModal({ open, onClose, onSaved }) {
             </div>
 
             <form onSubmit={save} className="mt-4 grid gap-3">
-              {/* Nombre */}
               <div>
                 <label className="text-sm text-gray-600">Nombre</label>
                 <input
@@ -112,7 +116,6 @@ export default function AddPetModal({ open, onClose, onSaved }) {
                 />
               </div>
 
-              {/* Especie */}
               <div>
                 <label className="text-sm text-gray-600">Especie</label>
                 <select
@@ -132,7 +135,7 @@ export default function AddPetModal({ open, onClose, onSaved }) {
                 </select>
               </div>
 
-              {/* Raza / tipo */}
+              {/* Campo raza */}
               <div>
                 <label className="text-sm text-gray-600">Raza / tipo</label>
                 {razasDisponibles.length > 0 ? (
@@ -140,13 +143,14 @@ export default function AddPetModal({ open, onClose, onSaved }) {
                     <input
                       value={filtro || raza}
                       onChange={e => setFiltro(e.target.value)}
-                      onFocus={() => setFiltro('')}
-                      placeholder="Escribe para buscar o selecciona una raza"
+                      onFocus={() => setEnfocado(true)}
+                      onBlur={() => setTimeout(() => setEnfocado(false), 200)}
+                      placeholder="Escribe o selecciona una raza"
                       className="w-full px-3 py-2 rounded-xl border border-emerald-200 focus:ring-2 focus:ring-emerald-600"
                     />
-                    {filtro.length > 0 && razasFiltradas.length > 0 && (
+                    {mostrarLista && (
                       <ul className="absolute z-50 mt-1 w-full bg-white border border-emerald-100 rounded-2xl shadow-lg max-h-56 overflow-y-auto">
-                        {razasFiltradas.map(r => (
+                        {(filtro.length > 0 ? razasFiltradas : razasDisponibles).map(r => (
                           <li
                             key={r}
                             onMouseDown={() => {
@@ -171,12 +175,9 @@ export default function AddPetModal({ open, onClose, onSaved }) {
                 )}
               </div>
 
-              {/* Fecha y peso */}
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label className="text-sm text-gray-600">
-                    Fecha de nacimiento
-                  </label>
+                  <label className="text-sm text-gray-600">Fecha de nacimiento</label>
                   <input
                     type="date"
                     value={dob}
@@ -185,9 +186,7 @@ export default function AddPetModal({ open, onClose, onSaved }) {
                   />
                 </div>
                 <div>
-                  <label className="text-sm text-gray-600">
-                    Peso (kg) — opcional
-                  </label>
+                  <label className="text-sm text-gray-600">Peso (kg)</label>
                   <input
                     type="number"
                     step="0.01"
@@ -198,7 +197,6 @@ export default function AddPetModal({ open, onClose, onSaved }) {
                 </div>
               </div>
 
-              {/* Historial veterinario */}
               <div>
                 <label className="text-sm text-gray-600">
                   Historial veterinario inicial (texto libre)
@@ -211,7 +209,6 @@ export default function AddPetModal({ open, onClose, onSaved }) {
                 />
               </div>
 
-              {/* Botones */}
               <div className="flex gap-3 justify-end pt-2">
                 <button
                   type="button"
