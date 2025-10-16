@@ -136,14 +136,14 @@ export default function AddPetModal({ open, onClose, onSaved }) {
                         {razasFiltradas.map(r => (
                           <li
                             key={r}
-                            onMouseDown={() => {
+                              onMouseDown={() => {
                               setRaza(r)
                               setFiltro('')
-                            }}
-                            className="px-3 py-2 hover:bg-emerald-50 cursor-pointer text-sm"
+                          }}
+                              className="px-3 py-2 hover:bg-emerald-50 cursor-pointer text-sm text-gray-800"
                           >
-                            {r}
-                          </li>
+                          {r}
+                      </li>
                         ))}
                       </ul>
                     )}
