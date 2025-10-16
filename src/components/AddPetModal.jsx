@@ -42,6 +42,7 @@ export default function AddPetModal({ open, onClose, onSaved }){
     addPet(pet)
     onSaved&&onSaved(pet)
     onClose&&onClose()
+    window.location.reload()
   }
 
   return (
