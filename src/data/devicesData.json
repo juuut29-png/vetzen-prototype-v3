@@ -1,0 +1,69 @@
+[
+  {
+    "especie": "Perro",
+    "categorias": [
+      { "nombre": "Alimentador inteligente", "descripcion": "Dispensador automático con control por app, programación de horarios y alertas de comida.", "tipo": "alimentacion" },
+      { "nombre": "Bebedero inteligente", "descripcion": "Sistema de agua con filtrado, control de nivel y aviso de mantenimiento.", "tipo": "hidratacion" },
+      { "nombre": "Cámara para mascotas", "descripcion": "Videovigilancia con visión nocturna, audio y control remoto.", "tipo": "monitoreo" },
+      { "nombre": "Collar GPS", "descripcion": "Localizador con seguimiento en tiempo real, rutas y alertas de zona segura.", "tipo": "rastreo" },
+      { "nombre": "Caja de arena inteligente", "descripcion": "Limpieza automática y monitoreo del uso para detectar problemas de salud.", "tipo": "higiene" },
+      { "nombre": "Puerta inteligente", "descripcion": "Gatera o puerta con microchip y apertura controlada por app.", "tipo": "acceso" },
+      { "nombre": "Juguete interactivo", "descripcion": "Robot o láser inteligente que estimula la actividad física y mental.", "tipo": "bienestar" }
+    ]
+  },
+  {
+    "especie": "Gato",
+    "categorias": [
+      { "nombre": "Alimentador con cámara", "descripcion": "Control remoto del alimento con cámara integrada para seguimiento visual.", "tipo": "alimentacion" },
+      { "nombre": "Caja de arena autolimpiable", "descripcion": "Sistema automatizado de limpieza con sensores de peso y movimiento.", "tipo": "higiene" },
+      { "nombre": "Collar de actividad", "descripcion": "Monitor de salud y nivel de actividad diaria.", "tipo": "salud" },
+      { "nombre": "Fuente inteligente", "descripcion": "Bebedero automático con flujo constante y alerta de limpieza.", "tipo": "hidratacion" }
+    ]
+  },
+  {
+    "especie": "Reptil",
+    "categorias": [
+      { "nombre": "Sensor de temperatura y humedad", "descripcion": "Control ambiental del terrario con alertas por exceso o defecto.", "tipo": "ambiente" },
+      { "nombre": "Termostato inteligente", "descripcion": "Controlador que regula calefacción y ventilación según parámetros.", "tipo": "ambiente" },
+      { "nombre": "Lámpara UVB/UVA inteligente", "descripcion": "Iluminación con programación automática de ciclos diurnos y nocturnos.", "tipo": "iluminacion" },
+      { "nombre": "Nebulizador automático", "descripcion": "Sistema de niebla o lluvia para mantener la humedad adecuada.", "tipo": "ambiente" },
+      { "nombre": "Cámara para terrario", "descripcion": "Vigilancia remota del hábitat para observar comportamiento.", "tipo": "monitoreo" }
+    ]
+  },
+  {
+    "especie": "Ave",
+    "categorias": [
+      { "nombre": "Comedero automático", "descripcion": "Dispensador de pienso o semilla programable por horarios.", "tipo": "alimentacion" },
+      { "nombre": "Sensor ambiental", "descripcion": "Monitorea temperatura, luz, CO₂ y humedad en aviarios.", "tipo": "ambiente" },
+      { "nombre": "Iluminación programable", "descripcion": "Simula ciclos naturales de luz para bienestar del ave.", "tipo": "iluminacion" },
+      { "nombre": "Cámara para jaula", "descripcion": "Supervisión del comportamiento y actividad diaria.", "tipo": "monitoreo" }
+    ]
+  },
+  {
+    "especie": "Roedor",
+    "categorias": [
+      { "nombre": "Comedero automático", "descripcion": "Dosificación automática de alimento seco o heno.", "tipo": "alimentacion" },
+      { "nombre": "Sensor ambiental", "descripcion": "Controla temperatura y humedad en el hábitat.", "tipo": "ambiente" },
+      { "nombre": "Rueda inteligente", "descripcion": "Registra actividad física diaria y patrones de ejercicio.", "tipo": "bienestar" },
+      { "nombre": "Cámara para jaula", "descripcion": "Monitoreo visual y detección de movimiento.", "tipo": "monitoreo" }
+    ]
+  },
+  {
+    "especie": "Pez / Acuario",
+    "categorias": [
+      { "nombre": "Alimentador automático acuático", "descripcion": "Dispensa comida a intervalos programados.", "tipo": "alimentacion" },
+      { "nombre": "Sensor de calidad del agua", "descripcion": "Mide pH, temperatura, oxígeno y otros parámetros.", "tipo": "ambiente" },
+      { "nombre": "Luces LED inteligentes", "descripcion": "Ciclos de iluminación simulando amanecer y atardecer.", "tipo": "iluminacion" },
+      { "nombre": "Filtro automatizado", "descripcion": "Control remoto del filtrado y flujo de agua.", "tipo": "mantenimiento" }
+    ]
+  },
+  {
+    "especie": "Animal exótico",
+    "categorias": [
+      { "nombre": "Estación de alimentación RFID", "descripcion": "Identifica al individuo mediante chip y registra consumo.", "tipo": "alimentacion" },
+      { "nombre": "Cámara térmica o infrarroja", "descripcion": "Monitoreo de temperatura corporal y comportamiento.", "tipo": "salud" },
+      { "nombre": "Sistema IoT ambiental", "descripcion": "Gestión remota completa del hábitat (temperatura, luz, humedad).", "tipo": "ambiente" },
+      { "nombre": "Monitor poblacional", "descripcion": "Control de peso, presencia y movimiento por individuo.", "tipo": "registro" }
+    ]
+  }
+]
