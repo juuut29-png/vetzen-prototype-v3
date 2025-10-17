@@ -16,10 +16,9 @@ export default function AddPetModal({ open, onClose, onSaved }) {
 
   const razasDisponibles = BREEDS[especie] || [];
 
-  // muestra todo si no se ha escrito nada
   const razasFiltradas =
     busqueda.trim() === ""
-      ? razasDisponibles
+      ? []
       : razasDisponibles.filter((r) =>
           r.toLowerCase().includes(busqueda.toLowerCase())
         );
@@ -148,14 +147,16 @@ export default function AddPetModal({ open, onClose, onSaved }) {
                 <input
                   type="text"
                   value={busqueda || raza}
-                  onChange={(e) => setBusqueda(e.target.value)}
-                  onFocus={() => setMostrarLista(true)}
+                  onChange={(e) => {
+                    setBusqueda(e.target.value);
+                    setMostrarLista(e.target.value.trim().length > 0);
+                  }}
                   onBlur={() => setTimeout(() => setMostrarLista(false), 150)}
-                  placeholder="Haz clic o escribe para buscar raza"
+                  placeholder="Escribe para buscar raza"
                   className="w-full px-3 py-2 rounded-xl border border-emerald-200 focus:ring-2 focus:ring-emerald-600"
                 />
 
-                {mostrarLista && (
+                {mostrarLista && razasFiltradas.length > 0 && (
                   <ul className="absolute z-[9999] mt-1 w-full bg-white border border-emerald-100 rounded-2xl shadow-lg max-h-56 overflow-y-auto">
                     {razasFiltradas.map((r) => (
                       <li
@@ -170,11 +171,6 @@ export default function AddPetModal({ open, onClose, onSaved }) {
                         {r}
                       </li>
                     ))}
-                    {razasFiltradas.length === 0 && (
-                      <li className="px-3 py-2 text-sm text-gray-400">
-                        No se encontraron razas
-                      </li>
-                    )}
                   </ul>
                 )}
               </div>
