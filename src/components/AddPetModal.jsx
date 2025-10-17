@@ -11,17 +11,17 @@ export default function AddPetModal({ open, onClose, onSaved }) {
   const [peso, setPeso] = useState('')
   const [raza, setRaza] = useState('')
   const [historial, setHistorial] = useState('')
-  const [filtro, setFiltro] = useState('')
-  const [enfocado, setEnfocado] = useState(false)
+  const [busqueda, setBusqueda] = useState('')
+  const [mostrarLista, setMostrarLista] = useState(false)
 
   const razasDisponibles = BREEDS[especie] || []
 
-  const razasFiltradas = razasDisponibles.filter(r =>
-    r.toLowerCase().includes(filtro.toLowerCase())
-  )
-
-  const mostrarLista =
-    enfocado && (filtro.length > 0 || razasFiltradas.length > 0)
+  const razasFiltradas =
+    busqueda.trim() === ''
+      ? razasDisponibles
+      : razasDisponibles.filter(r =>
+          r.toLowerCase().includes(busqueda.toLowerCase())
+        )
 
   function save(e) {
     e.preventDefault()
@@ -123,7 +123,8 @@ export default function AddPetModal({ open, onClose, onSaved }) {
                   onChange={e => {
                     setEspecie(e.target.value)
                     setRaza('')
-                    setFiltro('')
+                    setBusqueda('')
+                    setMostrarLista(false)
                   }}
                   className="w-full px-3 py-2 rounded-xl border border-emerald-200 focus:ring-2 focus:ring-emerald-600"
                 >
@@ -135,49 +136,43 @@ export default function AddPetModal({ open, onClose, onSaved }) {
                 </select>
               </div>
 
-              {/* Campo raza */}
-              <div>
+              {/* Raza / tipo */}
+              <div className="relative">
                 <label className="text-sm text-gray-600">Raza / tipo</label>
-                {razasDisponibles.length > 0 ? (
-                  <div className="relative">
-                    <input
-                      value={filtro || raza}
-                      onChange={e => setFiltro(e.target.value)}
-                      onFocus={() => setEnfocado(true)}
-                      onBlur={() => setTimeout(() => setEnfocado(false), 200)}
-                      placeholder="Escribe o selecciona una raza"
-                      className="w-full px-3 py-2 rounded-xl border border-emerald-200 focus:ring-2 focus:ring-emerald-600"
-                    />
-                    {mostrarLista && (
-                      <ul className="absolute z-50 mt-1 w-full bg-white border border-emerald-100 rounded-2xl shadow-lg max-h-56 overflow-y-auto">
-                        {(filtro.length > 0 ? razasFiltradas : razasDisponibles).map(r => (
-                          <li
-                            key={r}
-                            onMouseDown={() => {
-                              setRaza(r)
-                              setFiltro('')
-                            }}
-                            className="px-3 py-2 hover:bg-emerald-50 cursor-pointer text-sm text-gray-800"
-                          >
-                            {r}
-                          </li>
-                        ))}
-                      </ul>
-                    )}
-                  </div>
-                ) : (
-                  <input
-                    value={raza}
-                    onChange={e => setRaza(e.target.value)}
-                    placeholder="Escribe la raza o tipo"
-                    className="w-full px-3 py-2 rounded-xl border border-emerald-200 focus:ring-2 focus:ring-emerald-600"
-                  />
+                <input
+                  type="text"
+                  value={busqueda || raza}
+                  onChange={e => setBusqueda(e.target.value)}
+                  onFocus={() => setMostrarLista(true)}
+                  onBlur={() => setTimeout(() => setMostrarLista(false), 150)}
+                  placeholder="Escribe para buscar o haz clic para ver todas"
+                  className="w-full px-3 py-2 rounded-xl border border-emerald-200 focus:ring-2 focus:ring-emerald-600"
+                />
+
+                {mostrarLista && razasFiltradas.length > 0 && (
+                  <ul className="absolute z-50 mt-1 w-full bg-white border border-emerald-100 rounded-2xl shadow-lg max-h-56 overflow-y-auto">
+                    {razasFiltradas.map(r => (
+                      <li
+                        key={r}
+                        onMouseDown={() => {
+                          setRaza(r)
+                          setBusqueda('')
+                          setMostrarLista(false)
+                        }}
+                        className="px-3 py-2 hover:bg-emerald-50 cursor-pointer text-sm text-gray-800"
+                      >
+                        {r}
+                      </li>
+                    ))}
+                  </ul>
                 )}
               </div>
 
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label className="text-sm text-gray-600">Fecha de nacimiento</label>
+                  <label className="text-sm text-gray-600">
+                    Fecha de nacimiento
+                  </label>
                   <input
                     type="date"
                     value={dob}
@@ -186,7 +181,9 @@ export default function AddPetModal({ open, onClose, onSaved }) {
                   />
                 </div>
                 <div>
-                  <label className="text-sm text-gray-600">Peso (kg)</label>
+                  <label className="text-sm text-gray-600">
+                    Peso (kg) — opcional
+                  </label>
                   <input
                     type="number"
                     step="0.01"
