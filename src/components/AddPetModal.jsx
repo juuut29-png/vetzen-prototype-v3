@@ -84,7 +84,8 @@ export default function AddPetModal({ open, onClose, onSaved }) {
           exit={{ opacity: 0 }}
         >
           <div
-            className="absolute inset-0 bg-emerald-700/10 backdrop-blur-sm"
+            className="absolute left-1/2 top-10 -translate-x-1/2 w-[95%] max-w-lg bg-white rounded-3xl shadow-soft border border-emerald-100 p-5"
+            <form onSubmit={save} className="mt-4 grid gap-3 max-h-[80vh] overflow-y-auto pr-2">
             onClick={onClose}
           />
           <motion.div
