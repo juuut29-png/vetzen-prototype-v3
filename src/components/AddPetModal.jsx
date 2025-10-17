@@ -1,58 +1,59 @@
-import { motion, AnimatePresence } from 'framer-motion'
-import { X } from 'lucide-react'
-import { SPECIES, addPet, getPhaseAndAdviceFromDOB } from '../mock.js'
-import { BREEDS } from '../data/breeds.js'
-import { useState } from 'react'
+import { motion, AnimatePresence } from "framer-motion";
+import { X } from "lucide-react";
+import { SPECIES, addPet, getPhaseAndAdviceFromDOB } from "../mock.js";
+import { BREEDS } from "../data/breeds.js";
+import { useState } from "react";
 
 export default function AddPetModal({ open, onClose, onSaved }) {
-  const [nombre, setNombre] = useState('')
-  const [especie, setEspecie] = useState('Perro')
-  const [dob, setDob] = useState('')
-  const [peso, setPeso] = useState('')
-  const [raza, setRaza] = useState('')
-  const [historial, setHistorial] = useState('')
-  const [busqueda, setBusqueda] = useState('')
-  const [mostrarLista, setMostrarLista] = useState(false)
+  const [nombre, setNombre] = useState("");
+  const [especie, setEspecie] = useState("Perro");
+  const [dob, setDob] = useState("");
+  const [peso, setPeso] = useState("");
+  const [raza, setRaza] = useState("");
+  const [historial, setHistorial] = useState("");
+  const [busqueda, setBusqueda] = useState("");
+  const [mostrarLista, setMostrarLista] = useState(false);
 
-  const razasDisponibles = BREEDS[especie] || []
+  const razasDisponibles = BREEDS[especie] || [];
 
+  // muestra todo si no se ha escrito nada
   const razasFiltradas =
-    busqueda.trim() === ''
+    busqueda.trim() === ""
       ? razasDisponibles
-      : razasDisponibles.filter(r =>
+      : razasDisponibles.filter((r) =>
           r.toLowerCase().includes(busqueda.toLowerCase())
-        )
+        );
 
   function save(e) {
-    e.preventDefault()
+    e.preventDefault();
     if (!nombre || !especie || !dob) {
-      alert('Rellena nombre, especie y fecha')
-      return
+      alert("Rellena nombre, especie y fecha");
+      return;
     }
 
     const parsedHistorial = historial
-      ? historial.split(';').map(h => {
-          const [tipo, descripcion] = h.split(':').map(s => s.trim())
+      ? historial.split(";").map((h) => {
+          const [tipo, descripcion] = h.split(":").map((s) => s.trim());
           return {
-            tipo: tipo || 'Nota',
+            tipo: tipo || "Nota",
             fecha: new Date().toISOString().slice(0, 10),
-            descripcion: descripcion || ''
-          }
+            descripcion: descripcion || "",
+          };
         })
-      : []
+      : [];
 
     const c = getPhaseAndAdviceFromDOB(
       especie,
       dob,
       parseFloat(peso || 0),
-      raza || ''
-    )
+      raza || ""
+    );
 
     const pet = {
-      id: (nombre + '_' + Date.now()).toLowerCase().replace(/\s+/g, '_'),
+      id: (nombre + "_" + Date.now()).toLowerCase().replace(/\s+/g, "_"),
       nombre,
       especie,
-      raza: raza || '',
+      raza: raza || "",
       dob,
       peso: parseFloat(peso || 0),
       edad: +c.ageYears.toFixed(1),
@@ -65,13 +66,13 @@ export default function AddPetModal({ open, onClose, onSaved }) {
       historialClinico: [],
       vacunas: [],
       tratamientos: [],
-      archivos: []
-    }
+      archivos: [],
+    };
 
-    addPet(pet)
-    onSaved && onSaved(pet)
-    onClose && onClose()
-    window.location.reload()
+    addPet(pet);
+    onSaved && onSaved(pet);
+    onClose && onClose();
+    window.location.reload();
   }
 
   return (
@@ -84,8 +85,7 @@ export default function AddPetModal({ open, onClose, onSaved }) {
           exit={{ opacity: 0 }}
         >
           <div
-            className="absolute left-1/2 top-10 -translate-x-1/2 w-[95%] max-w-lg bg-white rounded-3xl shadow-soft border border-emerald-100 p-5"
-            <form onSubmit={save} className="mt-4 grid gap-3 max-h-[80vh] overflow-y-auto pr-2">
+            className="absolute inset-0 bg-emerald-700/10 backdrop-blur-sm"
             onClick={onClose}
           />
           <motion.div
@@ -93,7 +93,7 @@ export default function AddPetModal({ open, onClose, onSaved }) {
             animate={{ y: 0, opacity: 1 }}
             exit={{ y: 20, opacity: 0 }}
             transition={{ duration: 0.25 }}
-            className="absolute left-1/2 top-10 -translate-x-1/2 w-[95%] max-w-lg bg-white rounded-3xl shadow-soft border border-emerald-100 p-5 max-h-[90vh] overflow-y-auto"
+            className="absolute left-1/2 top-10 -translate-x-1/2 w-[95%] max-w-lg bg-white rounded-3xl shadow-soft border border-emerald-100 p-5"
           >
             <div className="flex items-center justify-between">
               <h3 className="text-xl font-extrabold text-emerald-700">
@@ -107,29 +107,34 @@ export default function AddPetModal({ open, onClose, onSaved }) {
               </button>
             </div>
 
-            <form onSubmit={save} className="mt-4 grid gap-3">
+            <form
+              onSubmit={save}
+              className="mt-4 grid gap-3 max-h-[80vh] overflow-y-auto pr-2"
+            >
+              {/* Nombre */}
               <div>
                 <label className="text-sm text-gray-600">Nombre</label>
                 <input
                   value={nombre}
-                  onChange={e => setNombre(e.target.value)}
+                  onChange={(e) => setNombre(e.target.value)}
                   className="w-full px-3 py-2 rounded-xl border border-emerald-200 focus:ring-2 focus:ring-emerald-600"
                 />
               </div>
 
+              {/* Especie */}
               <div>
                 <label className="text-sm text-gray-600">Especie</label>
                 <select
                   value={especie}
-                  onChange={e => {
-                    setEspecie(e.target.value)
-                    setRaza('')
-                    setBusqueda('')
-                    setMostrarLista(false)
+                  onChange={(e) => {
+                    setEspecie(e.target.value);
+                    setRaza("");
+                    setBusqueda("");
+                    setMostrarLista(false);
                   }}
                   className="w-full px-3 py-2 rounded-xl border border-emerald-200 focus:ring-2 focus:ring-emerald-600"
                 >
-                  {SPECIES.map(s => (
+                  {SPECIES.map((s) => (
                     <option key={s} value={s}>
                       {s}
                     </option>
@@ -143,32 +148,38 @@ export default function AddPetModal({ open, onClose, onSaved }) {
                 <input
                   type="text"
                   value={busqueda || raza}
-                  onChange={e => setBusqueda(e.target.value)}
+                  onChange={(e) => setBusqueda(e.target.value)}
                   onFocus={() => setMostrarLista(true)}
                   onBlur={() => setTimeout(() => setMostrarLista(false), 150)}
-                  placeholder="Escribe para buscar o haz clic para ver todas"
+                  placeholder="Haz clic o escribe para buscar raza"
                   className="w-full px-3 py-2 rounded-xl border border-emerald-200 focus:ring-2 focus:ring-emerald-600"
                 />
 
-                {mostrarLista && razasFiltradas.length > 0 && (
-                  <ul className="absolute z-50 mt-1 w-full bg-white border border-emerald-100 rounded-2xl shadow-lg max-h-56 overflow-y-auto">
-                    {razasFiltradas.map(r => (
+                {mostrarLista && (
+                  <ul className="absolute z-[9999] mt-1 w-full bg-white border border-emerald-100 rounded-2xl shadow-lg max-h-56 overflow-y-auto">
+                    {razasFiltradas.map((r) => (
                       <li
                         key={r}
                         onMouseDown={() => {
-                          setRaza(r)
-                          setBusqueda('')
-                          setMostrarLista(false)
+                          setRaza(r);
+                          setBusqueda("");
+                          setMostrarLista(false);
                         }}
                         className="px-3 py-2 hover:bg-emerald-50 cursor-pointer text-sm text-gray-800"
                       >
                         {r}
                       </li>
                     ))}
+                    {razasFiltradas.length === 0 && (
+                      <li className="px-3 py-2 text-sm text-gray-400">
+                        No se encontraron razas
+                      </li>
+                    )}
                   </ul>
                 )}
               </div>
 
+              {/* Fecha y peso */}
               <div className="grid grid-cols-2 gap-3">
                 <div>
                   <label className="text-sm text-gray-600">
@@ -177,36 +188,36 @@ export default function AddPetModal({ open, onClose, onSaved }) {
                   <input
                     type="date"
                     value={dob}
-                    onChange={e => setDob(e.target.value)}
+                    onChange={(e) => setDob(e.target.value)}
                     className="w-full px-3 py-2 rounded-xl border border-emerald-200 focus:ring-2 focus:ring-emerald-600"
                   />
                 </div>
                 <div>
-                  <label className="text-sm text-gray-600">
-                    Peso (kg) — opcional
-                  </label>
+                  <label className="text-sm text-gray-600">Peso (kg)</label>
                   <input
                     type="number"
                     step="0.01"
                     value={peso}
-                    onChange={e => setPeso(e.target.value)}
+                    onChange={(e) => setPeso(e.target.value)}
                     className="w-full px-3 py-2 rounded-xl border border-emerald-200 focus:ring-2 focus:ring-emerald-600"
                   />
                 </div>
               </div>
 
+              {/* Historial veterinario */}
               <div>
                 <label className="text-sm text-gray-600">
-                  Historial veterinario inicial (texto libre)
+                  Historial veterinario inicial
                 </label>
                 <textarea
                   value={historial}
-                  onChange={e => setHistorial(e.target.value)}
+                  onChange={(e) => setHistorial(e.target.value)}
                   placeholder="Ej: Vacuna rabia: 2024; Desparasitación: 2025-01-10..."
                   className="w-full px-3 py-2 rounded-xl border border-emerald-200 focus:ring-2 focus:ring-emerald-600 text-sm"
                 />
               </div>
 
+              {/* Botones */}
               <div className="flex gap-3 justify-end pt-2">
                 <button
                   type="button"
@@ -227,5 +238,5 @@ export default function AddPetModal({ open, onClose, onSaved }) {
         </motion.div>
       )}
     </AnimatePresence>
-  )
+  );
 }
